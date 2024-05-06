@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import app from '../firebase'; // Import the initialized Firebase app
+import { getAuth, signInWithEmailAndPassword, getIdToken } from 'firebase/auth';
+import app from '../firebase';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
@@ -8,9 +8,14 @@ const SignInForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const auth = getAuth(app); // Pass the initialized Firebase app
+    const auth = getAuth(app);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      if (user) {
+        const token = await getIdToken(user);
+        console.log('ID token:', token);
+      }
       console.log('Signed in successfully');
     } catch (error) {
       console.error('Error signing in:', error.message);
