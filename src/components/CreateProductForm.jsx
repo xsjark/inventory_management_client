@@ -8,6 +8,7 @@ const CreateProductForm = ({ fetchProducts }) => {
     const handleCreateProduct = async () => {
         const auth = getAuth(app);
         const user = auth.currentUser;
+        console.log('client', auth.currentUser.uid)
         if (!user) {
             console.error('User not signed in');
             return;

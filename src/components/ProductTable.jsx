@@ -1,9 +1,4 @@
-import { useEffect, useState } from 'react';
-import { getAuth } from 'firebase/auth';
-import app from '../firebase';
-
 const ProductTable = ({ products }) => {
-
     return (
         <table>
             <thead>
