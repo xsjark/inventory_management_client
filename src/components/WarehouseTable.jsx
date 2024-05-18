@@ -4,7 +4,11 @@ const WarehouseTable = ({ warehouseInventory }) => {
 
     return (
         <table>
-            <caption>{warehouseInventory.name}</caption>
+            <caption>
+                {warehouseInventory.name}
+                <i>({warehouseInventory.id})</i>
+                {warehouseInventory.disabled && (<i>disabled</i>)}
+            </caption>
             <thead>
                 <tr>
                     <th>ID</th>
