@@ -139,8 +139,7 @@ function App() {
             </div>
             <div className='warehouses-container'>
               {warehouses && warehouses.map(warehouse => (
-                <WarehouseTable warehouseId={warehouse.id} warehouseInventory={warehouse.inventory}/>
-                
+                <WarehouseTable key={warehouse.name} warehouseInventory={warehouse} />
               ))}
             </div>
             <div className='inbound-container'>

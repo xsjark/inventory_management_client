@@ -1,19 +1,22 @@
-const WarehouseTable = ({ warehouseId, warehouseInventory }) => {
+const WarehouseTable = ({ warehouseInventory }) => {
+    // Extracting nested inventory data
+    const inventory = warehouseInventory?.nestedCollections?.[0]?.inventory || [];
+    
     return (
         <table>
-            <caption>
-                {warehouseId}
-            </caption>
+            <caption>{warehouseInventory.name}</caption>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
-                {Object.entries(warehouseInventory).map(([productName, quantity]) => (
-                    <tr key={productName}>
-                        <td>{productName}</td>
+                {inventory.map(({ name, quantity, productId }) => (
+                    <tr key={name}>
+                        <td>{productId}</td>
+                        <td>{name}</td>
                         <td>{quantity}</td>
                     </tr>
                 ))}
