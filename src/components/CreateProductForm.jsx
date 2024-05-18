@@ -22,7 +22,7 @@ const CreateProductForm = ({ fetchProducts }) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${idToken}`
                 },
-                body: JSON.stringify({ name: productName })
+                body: JSON.stringify({ name: productName, disabled: false })
             });
 
             if (response.ok) {

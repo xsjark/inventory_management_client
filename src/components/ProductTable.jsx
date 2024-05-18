@@ -5,6 +5,7 @@ const ProductTable = ({ products }) => {
                 <tr>
                     <th>UID</th>
                     <th>Name</th>
+                    <th>Disabled</th>
                 </tr>
             </thead>
             <tbody>
@@ -12,6 +13,7 @@ const ProductTable = ({ products }) => {
                     <tr key={product.id}>
                         <td>{product.id}</td>
                         <td>{product.name}</td>
+                        <td>{JSON.stringify(product.disabled)}</td>
                     </tr>
                 ))}
             </tbody>
