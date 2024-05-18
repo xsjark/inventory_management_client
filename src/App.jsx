@@ -12,6 +12,7 @@ import WarehouseTable from './components/WarehouseTable';
 import InboundForm from './components/InboundForm/InboundForm';
 import CreateWarehouseForm from './components/CreateWarehouseForm';
 import DeleteWarehouseForm from './components/DeleteWarehouseForm';
+import ModifyWarehouseForm from './components/ModifyWarehouseForm';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -139,14 +140,18 @@ function App() {
             </div>
             <div className='warehouses-container'>
               <CreateWarehouseForm />
+              <ModifyWarehouseForm />
               <DeleteWarehouseForm />
               {warehouses && warehouses.map(warehouse => (
                 <WarehouseTable key={warehouse.name} warehouseInventory={warehouse} />
               ))}
             </div>
-            <div className='inbound-container'>
-              <InboundForm products={products} warehouses={warehouses} />
+            <div className='customers-container'>
+              todo
             </div>
+            {/* <div className='inbound-container'>
+              <InboundForm products={products} warehouses={warehouses} />
+            </div> */}
           </div>
         </>
       ) : (

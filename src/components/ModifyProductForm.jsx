@@ -37,7 +37,7 @@ const ModifyProductForm = ({ fetchProducts }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='UID' value={uid} onChange={(e) => setUid(e.target.value)} />
+                <input type="text" placeholder='Product UID' value={uid} onChange={(e) => setUid(e.target.value)} />
                 <input type="text" placeholder='Product Name' value={name} onChange={(e) => setName(e.target.value)} />
             <button type="submit">Modify Product</button>
         </form>

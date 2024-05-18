@@ -18,7 +18,7 @@ const WarehouseTable = ({ warehouseInventory }) => {
             </thead>
             <tbody>
                 {inventory.map(({ name, quantity, productId }) => (
-                    <tr key={name}>
+                    <tr key={warehouseInventory.id + productId}>
                         <td>{productId}</td>
                         <td>{name}</td>
                         <td>{quantity}</td>
