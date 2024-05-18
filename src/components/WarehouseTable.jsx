@@ -1,14 +1,14 @@
 const WarehouseTable = ({ warehouseInventory }) => {
     // Extracting nested inventory data
     const inventory = warehouseInventory?.nestedCollections?.[0]?.inventory || [];
-    
+
     return (
         <table>
             <caption>{warehouseInventory.name}</caption>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Product Name</th>
+                    <th>Name</th>
                     <th>Quantity</th>
                 </tr>
             </thead>

@@ -72,7 +72,6 @@ function App() {
     const auth = getAuth(app);
     const user = auth.currentUser;
 
-    console.log(user.uid)
     if (!user) {
       console.error('User not signed in');
       return;
@@ -91,7 +90,6 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('User role:', data.role);
         setRole(data.role); // Set the state role using setRole
       } else {
         throw new Error('Failed to send token to server');
@@ -120,7 +118,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-
   return (
     <>
       {loading ? (
@@ -144,7 +141,7 @@ function App() {
               ))}
             </div>
             <div className='inbound-container'>
-              <InboundForm products={products} />
+              <InboundForm products={products} warehouses={warehouses} />
             </div>
           </div>
         </>
