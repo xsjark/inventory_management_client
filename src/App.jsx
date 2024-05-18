@@ -9,6 +9,7 @@ import ProductTable from './components/ProductTable';
 import ModifyProductForm from './components/ModifyProductForm';
 import DeleteProductForm from './components/DeleteProductForm';
 import WarehouseTable from './components/WarehouseTable';
+import InboundForm from './components/InboundForm/InboundForm';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -143,7 +144,7 @@ function App() {
               ))}
             </div>
             <div className='inbound-container'>
-              todo
+              <InboundForm products={products} />
             </div>
           </div>
         </>
