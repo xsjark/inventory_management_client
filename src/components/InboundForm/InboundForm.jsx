@@ -76,8 +76,6 @@ const InboundForm = ({ products, warehouses, customers }) => {
                 </div>
             ))}
             <button onClick={addProductSet}>+</button>
-            {JSON.stringify(selectedCustomerId)}
-            {JSON.stringify(selectedCustomerName)}
         </div>
     );
 };
