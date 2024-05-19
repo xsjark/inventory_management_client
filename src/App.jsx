@@ -13,6 +13,7 @@ import InboundForm from './components/InboundForm/InboundForm';
 import CreateWarehouseForm from './components/CreateWarehouseForm';
 import DeleteWarehouseForm from './components/DeleteWarehouseForm';
 import ModifyWarehouseForm from './components/ModifyWarehouseForm';
+import CreateCustomerForm from './components/CreateCustomerForm';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -147,7 +148,7 @@ function App() {
               ))}
             </div>
             <div className='customers-container'>
-              todo
+              <CreateCustomerForm />
             </div>
             {/* <div className='inbound-container'>
               <InboundForm products={products} warehouses={warehouses} />
