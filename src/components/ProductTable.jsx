@@ -3,7 +3,7 @@ const ProductTable = ({ products }) => {
         <table>
             <thead>
                 <tr>
-                    <th>UID</th>
+                    <th>Product UID</th>
                     <th>Name</th>
                     <th>Disabled</th>
                 </tr>

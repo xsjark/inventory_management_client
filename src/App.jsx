@@ -14,12 +14,16 @@ import CreateWarehouseForm from './components/CreateWarehouseForm';
 import DeleteWarehouseForm from './components/DeleteWarehouseForm';
 import ModifyWarehouseForm from './components/ModifyWarehouseForm';
 import CreateCustomerForm from './components/CreateCustomerForm';
+import CustomerTable from './components/CustomerTable';
+import ModifyCustomerForm from './components/ModifyCustomerForm';
+import DeleteCustomerForm from './components/DeleteCustomer';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [warehouses, setWarehouses] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [role, setRole] = useState('');
 
   const fetchProducts = async () => {
@@ -41,6 +45,7 @@ function App() {
       console.error('Error fetching products:', error.message);
     }
   };
+
   const fetchWarehouses = async () => {
     try {
       const auth = getAuth(app);
@@ -60,6 +65,27 @@ function App() {
       console.error('Error fetching warehouses:', error.message);
     }
   };
+
+  const fetchCustomers = async () => {
+    try {
+      const auth = getAuth(app);
+      const idToken = await auth.currentUser.getIdToken();
+      const response = await fetch('http://localhost:3000/getCustomers', {
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
+      if (response.ok) {
+        const customersData = await response.json();
+        setCustomers(customersData);
+      } else {
+        throw new Error('Failed to fetch customers');
+      }
+    } catch (error) {
+      console.error('Error fetching customers:', error.message);
+    }
+  };
+  
 
   // useEffect(() => {
   //   const auth = getAuth(app);
@@ -111,7 +137,8 @@ function App() {
       Promise.all([
         getRole(),
         fetchProducts(),
-        fetchWarehouses()
+        fetchWarehouses(),
+        fetchCustomers()
       ]).then(() => {
         setLoading(false);
       }).catch((error) => {
@@ -149,6 +176,9 @@ function App() {
             </div>
             <div className='customers-container'>
               <CreateCustomerForm />
+              <ModifyCustomerForm />
+              <DeleteCustomerForm />
+              <CustomerTable customers={customers} />
             </div>
             {/* <div className='inbound-container'>
               <InboundForm products={products} warehouses={warehouses} />

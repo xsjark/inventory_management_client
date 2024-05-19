@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
 const CreateCustomerForm = () => {
-  const [companyName, setCompanyName] = useState('');
+  const [name, setName] = useState('');
 
   const handleCreateCustomer = async () => {
     const auth = getAuth(app); 
@@ -23,7 +23,7 @@ const CreateCustomerForm = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${idToken}`,
         },
-        body: JSON.stringify({ companyName }),
+        body: JSON.stringify({ name, disabled: false }),
       });
   
       if (response.ok) {
@@ -42,8 +42,8 @@ const CreateCustomerForm = () => {
       <input
         type="text"
         placeholder='Company Name'
-        value={companyName}
-        onChange={(e) => setCompanyName(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <button onClick={handleCreateCustomer}>Create Customer</button>
     </div>

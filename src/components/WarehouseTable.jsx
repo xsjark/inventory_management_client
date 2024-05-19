@@ -11,7 +11,7 @@ const WarehouseTable = ({ warehouseInventory }) => {
             </caption>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Product UID</th>
                     <th>Name</th>
                     <th>Quantity</th>
                 </tr>
