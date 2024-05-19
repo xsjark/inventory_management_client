@@ -3,12 +3,15 @@ import ProductQuantity from "../ProductQuantity";
 import ProductSelect from "../ProductSelect";
 import "./InboundForm.css";
 import WarehouseSelect from "../WarehouseSelect";
+import CustomerSelect from "../CustomerSelect";
 
-const InboundForm = ({ products, warehouses }) => {
+const InboundForm = ({ products, warehouses, customers }) => {
     const [productSets, setProductSets] = useState([{ id: 1 }]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedWarehouseId, setSelectedWarehouseId] = useState('');
     const [selectedWarehouseName, setSelectedWarehouseName] = useState('');
+    const [selectedCustomerId, setSelectedCustomerId] = useState('');
+    const [selectedCustomerName, setSelectedCustomerName] = useState('');
 
     const addProductSet = () => {
         const newId = productSets[productSets.length - 1].id + 1;
@@ -28,11 +31,20 @@ const InboundForm = ({ products, warehouses }) => {
         setProductSets(productSets.map((set) => (set.id === id ? { ...set, quantity: quantity } : set)));
     };
 
-    const handleSelectWarehouse = (selectedWarehouse) => {
+    const handleSelectCustomer = (selectedWarehouse) => {
         if (selectedWarehouse !== null) {
-            setSelectedWarehouseId(selectedWarehouse.id);
-            setSelectedWarehouseName(selectedWarehouse.name)
-            // Use the selectedWarehouse object to set the selected warehouse in your state
+            setSelectedCustomerId(selectedWarehouse.id);
+            setSelectedCustomerName(selectedWarehouse.name)
+        } else {
+            setSelectedCustomerId('');
+            setSelectedCustomerName('');
+        }
+    };
+
+    const handleSelectWarehouse = (selectedCustomer) => {
+        if (selectedCustomer !== null) {
+            setSelectedWarehouseId(selectedCustomer.id);
+            setSelectedWarehouseName(selectedCustomer.name)
         } else {
             setSelectedWarehouseId('');
             setSelectedWarehouseName('');
@@ -47,6 +59,7 @@ const InboundForm = ({ products, warehouses }) => {
     return (
         <div>
             <WarehouseSelect warehouses={warehouses} handleSelectWarehouse={handleSelectWarehouse} />
+            <CustomerSelect customers={customers} handleSelectCustomer={handleSelectCustomer} />
             {productSets.map((productSet, index) => (
                 <div key={productSet.id} className="inbound-form-row">
                     <ProductSelect
@@ -63,6 +76,8 @@ const InboundForm = ({ products, warehouses }) => {
                 </div>
             ))}
             <button onClick={addProductSet}>+</button>
+            {JSON.stringify(selectedCustomerId)}
+            {JSON.stringify(selectedCustomerName)}
         </div>
     );
 };

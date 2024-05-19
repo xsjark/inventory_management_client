@@ -1,6 +1,3 @@
-// ProductSelect.js
-import React from "react";
-
 const ProductSelect = ({ products, value, onChange, selectedProducts }) => {
     const filteredProducts = products.filter(product => !product.disabled);
 

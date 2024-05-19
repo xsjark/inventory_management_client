@@ -180,9 +180,9 @@ function App() {
               <DeleteCustomerForm />
               <CustomerTable customers={customers} />
             </div>
-            {/* <div className='inbound-container'>
-              <InboundForm products={products} warehouses={warehouses} />
-            </div> */}
+            <div className='inbound-container'>
+              <InboundForm products={products} warehouses={warehouses} customers={customers} />
+            </div>
           </div>
         </>
       ) : (

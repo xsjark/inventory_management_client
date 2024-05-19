@@ -4,7 +4,10 @@
 }
 
 .app-container {
-  display: flex;
+  display: grid;
+  grid-template-rows: auto auto; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 10px; 
 }
 
 .app-container > div {
