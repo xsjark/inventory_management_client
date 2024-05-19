@@ -17,6 +17,7 @@ import CreateCustomerForm from './components/CreateCustomerForm';
 import CustomerTable from './components/CustomerTable';
 import ModifyCustomerForm from './components/ModifyCustomerForm';
 import DeleteCustomerForm from './components/DeleteCustomer';
+import ModifyProductQuantity from './components/ModifyProductQuantity';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -182,6 +183,7 @@ function App() {
             </div>
             <div className='inbound-container'>
               <InboundForm products={products} warehouses={warehouses} customers={customers} />
+              <ModifyProductQuantity />
             </div>
           </div>
         </>
