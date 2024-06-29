@@ -183,7 +183,7 @@ function App() {
             </div>
             <div className='inbound-container'>
               <InboundForm products={products} warehouses={warehouses} customers={customers} />
-              <ModifyProductQuantity />
+              {/* <ModifyProductQuantity /> */}
             </div>
           </div>
         </>
