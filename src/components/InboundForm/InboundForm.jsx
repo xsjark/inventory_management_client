@@ -55,15 +55,15 @@ const InboundForm = ({ products, warehouses, customers }) => {
     };
 
     const handleSubmit = async () => {
-    const auth = getAuth(app); // Initialize auth using getAuth
-    const user = auth.currentUser;
-  
-    if (!user) {
-      console.error('User not signed in');
-      return;
-    }
-  
-    const idToken = await user.getIdToken();
+        const auth = getAuth(app); // Initialize auth using getAuth
+        const user = auth.currentUser;
+
+        if (!user) {
+            console.error('User not signed in');
+            return;
+        }
+
+        const idToken = await user.getIdToken();
 
         if (!selectedWarehouseId) {
             alert('Please select a warehouse.');
@@ -72,7 +72,8 @@ const InboundForm = ({ products, warehouses, customers }) => {
 
         const updates = productSets.map(set => ({
             productId: set.productId,
-            quantity: parseInt(set.quantity, 10)
+            quantity: parseInt(set.quantity, 10),
+            name: set
         }));
 
         try {
