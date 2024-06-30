@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ProductQuantity from "../ProductQuantity";
-import ProductSelect from "../ProductSelect";
-import "./InboundForm.css";
-import WarehouseSelect from "../WarehouseSelect";
-import CustomerSelect from "../CustomerSelect";
-import { getAuth } from 'firebase/auth'; // Import getAuth from Firebase Auth
-import app from '../../firebase';
+import ProductQuantity from "./ProductQuantity";
+import ProductSelect from "./ProductSelect";
+import WarehouseSelect from "./WarehouseSelect";
+import CustomerSelect from "./CustomerSelect";
+import { getAuth } from 'firebase/auth';
+import app from './../firebase';
 
-
-const InboundForm = ({ products, warehouses, customers }) => {
+const CreateOutboundForm = ({ products, warehouses, customers }) => {
     const [productSets, setProductSets] = useState([{ id: 1 }]);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedWarehouseId, setSelectedWarehouseId] = useState('');
@@ -55,7 +53,7 @@ const InboundForm = ({ products, warehouses, customers }) => {
     };
 
     const handleSubmit = async () => {
-        const auth = getAuth(app); // Initialize auth using getAuth
+        const auth = getAuth(app);
         const user = auth.currentUser;
 
         if (!user) {
@@ -70,14 +68,19 @@ const InboundForm = ({ products, warehouses, customers }) => {
             return;
         }
 
+        if (!selectedCustomerId) {
+            alert('Please select a customer.');
+            return;
+        }
+
         const updates = productSets.map(set => ({
             productId: set.productId,
-            quantity: parseInt(set.quantity, 10),
-            name: set
+            quantity: -parseInt(set.quantity, 10), // Negative quantity for outbound
         }));
 
         try {
-            const response = await fetch('http://localhost:3000/modifyProductQuantity', {
+            // Call modifyProductQuantity to subtract from inventory
+            const modifyResponse = await fetch('http://localhost:3000/modifyProductQuantity', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,14 +89,40 @@ const InboundForm = ({ products, warehouses, customers }) => {
                 body: JSON.stringify({ warehouseId: selectedWarehouseId, updates })
             });
 
-            if (response.ok) {
-                alert('Product quantities updated successfully');
-            } else {
-                alert('Failed to update product quantities');
+            if (!modifyResponse.ok) {
+                throw new Error('Failed to update product quantities');
             }
+
+            // Prepare products array for invoice
+            const invoiceProducts = updates.map(update => ({
+                productId: update.productId,
+                quantity: -update.quantity // Convert back to positive for invoice
+            }));
+
+            // Call createOutboundInvoice
+            const invoiceResponse = await fetch('http://localhost:3000/createOutboundInvoice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${idToken}`
+                },
+                body: JSON.stringify({
+                    companyUid: selectedCustomerId,
+                    products: invoiceProducts,
+                    warehouseId: selectedWarehouseId
+                })
+            });
+
+            if (!invoiceResponse.ok) {
+                throw new Error('Failed to create outbound invoice');
+            }
+
+            const invoiceData = await invoiceResponse.json();
+
+            alert(`Product quantities updated and outbound invoice created successfully. Invoice ID: ${invoiceData.invoiceId}`);
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while updating product quantities');
+            alert(error.message || 'An error occurred while processing the request');
         }
     };
 
@@ -107,7 +136,7 @@ const InboundForm = ({ products, warehouses, customers }) => {
             <WarehouseSelect warehouses={warehouses} handleSelectWarehouse={handleSelectWarehouse} />
             <CustomerSelect customers={customers} handleSelectCustomer={handleSelectCustomer} />
             {productSets.map((productSet, index) => (
-                <div key={productSet.id} className="inbound-form-row">
+                <div key={productSet.id} className="outbound-form-row">
                     <ProductSelect
                         products={products}
                         value={productSet.productId}
@@ -122,9 +151,9 @@ const InboundForm = ({ products, warehouses, customers }) => {
                 </div>
             ))}
             <button onClick={addProductSet}>+</button>
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit}>Create Outbound Invoice</button>
         </div>
     );
 };
 
-export default InboundForm;
+export default CreateOutboundForm;

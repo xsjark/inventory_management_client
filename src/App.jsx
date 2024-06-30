@@ -9,7 +9,7 @@ import ProductTable from './components/ProductTable';
 import ModifyProductForm from './components/ModifyProductForm';
 import DeleteProductForm from './components/DeleteProductForm';
 import WarehouseTable from './components/WarehouseTable';
-import InboundForm from './components/InboundForm/InboundForm';
+import CreateInboundForm from './components/CreateInboundForm/CreateInboundForm';
 import CreateWarehouseForm from './components/CreateWarehouseForm';
 import DeleteWarehouseForm from './components/DeleteWarehouseForm';
 import ModifyWarehouseForm from './components/ModifyWarehouseForm';
@@ -17,7 +17,11 @@ import CreateCustomerForm from './components/CreateCustomerForm';
 import CustomerTable from './components/CustomerTable';
 import ModifyCustomerForm from './components/ModifyCustomerForm';
 import DeleteCustomerForm from './components/DeleteCustomer';
-import ModifyProductQuantity from './components/ModifyProductQuantity';
+import InboundInvoicesTable from './components/InboundInvoicesTable';
+import DeleteInboundInvoiceForm from './components/DeleteInboundInvoiceForm';
+import CreateOutboundInvoiceForm from './components/CreateOutboundForm';
+import OutboundInvoicesTable from './components/OutboundInvoicesTable';
+import DeleteOutboundInvoiceForm from './components/DeleteOutboundInvoiceForm';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -25,6 +29,9 @@ function App() {
   const [products, setProducts] = useState([]);
   const [warehouses, setWarehouses] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [outboundInvoices, setOutboundInvoices] = useState([]);
+  const [error, setError] = useState(null);
   const [role, setRole] = useState('');
 
   const fetchProducts = async () => {
@@ -87,6 +94,64 @@ function App() {
     }
   };
   
+  const fetchInboundInvoices = async () => {
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+  
+    if (!user) {
+      console.error('User not signed in');
+      return;
+    }
+  
+    try {
+      const idToken = await user.getIdToken();
+      const response = await fetch('http://localhost:3000/getInvoices', {
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch invoices');
+      }
+  
+      const fetchedInvoices = await response.json();
+      setInvoices(fetchedInvoices);
+    } catch (error) {
+      console.error('Error fetching invoices:', error.message);
+    }
+  };
+
+  const fetchOutboundInvoices = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+        const auth = getAuth(app);
+        const user = auth.currentUser;
+        if (!user) {
+            throw new Error('User not signed in');
+        }
+        const idToken = await user.getIdToken();
+
+        const response = await fetch('http://localhost:3000/getOutboundInvoices', {
+            headers: {
+                'Authorization': `Bearer ${idToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch outbound invoices');
+        }
+
+        const data = await response.json();
+        setOutboundInvoices(data);
+    } catch (error) {
+        console.error('Error fetching outbound invoices:', error.message);
+        setError(error.message);
+    } finally {
+        setLoading(false);
+    }
+};
 
   // useEffect(() => {
   //   const auth = getAuth(app);
@@ -130,6 +195,10 @@ function App() {
     }
   };
 
+  const handleInvoiceCreated = () => {
+    // Refresh data if needed
+  };
+
   useEffect(() => {
     const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -139,7 +208,9 @@ function App() {
         getRole(),
         fetchProducts(),
         fetchWarehouses(),
-        fetchCustomers()
+        fetchCustomers(),
+        fetchInboundInvoices(),
+        fetchOutboundInvoices(),
       ]).then(() => {
         setLoading(false);
       }).catch((error) => {
@@ -182,8 +253,19 @@ function App() {
               <CustomerTable customers={customers} />
             </div>
             <div className='inbound-container'>
-              <InboundForm products={products} warehouses={warehouses} customers={customers} />
-              {/* <ModifyProductQuantity /> */}
+              <CreateInboundForm products={products} warehouses={warehouses} customers={customers} />
+              <DeleteInboundInvoiceForm onInvoiceDeleted={fetchInboundInvoices} />
+              <InboundInvoicesTable invoices={invoices} />
+            </div>
+            <div className='outbound-container'>
+              <CreateOutboundInvoiceForm 
+                warehouses={warehouses}
+                customers={customers}
+                products={products}
+                onInvoiceCreated={fetchOutboundInvoices}
+              />
+              <DeleteOutboundInvoiceForm onInvoiceDeleted={fetchOutboundInvoices} />
+              <OutboundInvoicesTable invoices={outboundInvoices} />
             </div>
           </div>
         </>
