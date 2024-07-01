@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const DeleteWarehouseForm = () => {
+const DeleteWarehouseForm = ({ onSubmit }) => {
     const [uid, setUid] = useState('');
 
     const handleDeleteWarehouse = async (e) => {
@@ -25,6 +25,7 @@ const DeleteWarehouseForm = () => {
             });
             if (response.ok) {
                 console.log('Warehouse deleted successfully');
+                onSubmit();
             } else {
                 throw new Error('Failed to delete warehouse');
             }

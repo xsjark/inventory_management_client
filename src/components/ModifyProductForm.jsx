@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const ModifyProductForm = ({ fetchProducts }) => {
+const ModifyProductForm = ({ onSubmit }) => {
     const [uid, setUid] = useState('');
     const [name, setName] = useState('');
 
@@ -25,7 +25,7 @@ const ModifyProductForm = ({ fetchProducts }) => {
                 body: JSON.stringify({ uid, name })
             });
             if (response.ok) {
-                fetchProducts();
+                onSubmit();
                 console.log('Product modified successfully');
             } else {
                 throw new Error('Failed to modify product');

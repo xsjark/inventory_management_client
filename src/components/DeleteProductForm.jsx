@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const DeleteProductForm = ({ fetchProducts }) => {
+const DeleteProductForm = ({ onSubmit }) => {
     const [uid, setUid] = useState('');
 
     const handleDelete = async (e) => {
@@ -25,7 +25,7 @@ const DeleteProductForm = ({ fetchProducts }) => {
             });
             if (response.ok) {
                 console.log('Product deleted successfully');
-                fetchProducts();
+                onSubmit();
             } else {
                 throw new Error('Failed to delete product');
             }

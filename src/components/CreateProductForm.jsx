@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const CreateProductForm = ({ fetchProducts }) => {
+const CreateProductForm = ({ onSubmit }) => {
     const [productName, setProductName] = useState('');
 
     const handleCreateProduct = async () => {
@@ -27,7 +27,7 @@ const CreateProductForm = ({ fetchProducts }) => {
 
             if (response.ok) {
                 console.log('Product added successfully');
-                fetchProducts();
+                onSubmit();
             } else {
                 throw new Error('Failed to add product');
             }

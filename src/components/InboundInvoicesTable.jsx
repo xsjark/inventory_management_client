@@ -6,7 +6,7 @@ const InboundInvoicesTable = ({ invoices }) => (
         <th>Company</th>
         <th>Created</th>
         <th>Products</th>
-        <th>Disabled</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -19,12 +19,12 @@ const InboundInvoicesTable = ({ invoices }) => (
             <ul>
               {invoice.products.map((product, index) => (
                 <li key={index}>
-                  {product.productId}(x{product.quantity})
+                  {product.name}(x{product.quantity})
                 </li>
               ))}
             </ul>
           </td>
-          <td>{JSON.stringify(invoice.disabled)}</td>
+          <td>{invoice.disabled ? 'Disabled' : 'Active'}</td>
         </tr>
       ))}
     </tbody>

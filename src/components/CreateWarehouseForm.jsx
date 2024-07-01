@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { getAuth } from 'firebase/auth'; // Import getAuth from Firebase Auth
 import app from '../firebase';
 
-const CreateWarehouseForm = () => {
+const CreateWarehouseForm = ({ onSubmit }) => {
   const [warehouseName, setWarehouseName] = useState('');
 
   const handleCreateWarehouse = async () => {
@@ -29,7 +29,7 @@ const CreateWarehouseForm = () => {
   
       if (response.ok) {
         console.log('Warehouse created successfully');
-        // Perform any additional actions after creating the warehouse
+        onSubmit();
       } else {
         throw new Error('Failed to create warehouse');
       }

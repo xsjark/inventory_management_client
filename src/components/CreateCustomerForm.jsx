@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { getAuth } from 'firebase/auth'; 
 import app from '../firebase';
 
-const CreateCustomerForm = () => {
+const CreateCustomerForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
 
   const handleCreateCustomer = async () => {
@@ -28,7 +28,7 @@ const CreateCustomerForm = () => {
   
       if (response.ok) {
         console.log('Customer created successfully');
-        // Perform any additional actions after creating the customer
+        onSubmit();
       } else {
         throw new Error('Failed to create customer');
       }

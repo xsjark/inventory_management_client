@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const DeleteCustomerForm = () => {
+const DeleteCustomerForm = ({ onSubmit }) => {
     const [uid, setUid] = useState('');
 
     const handleDelete = async (e) => {
@@ -25,6 +25,7 @@ const DeleteCustomerForm = () => {
             });
             if (response.ok) {
                 console.log('Customer deleted successfully');
+                onSubmit();
             } else {
                 throw new Error('Failed to delete customer');
             }

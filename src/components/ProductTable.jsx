@@ -5,7 +5,7 @@ const ProductTable = ({ products }) => {
                 <tr>
                     <th>Product UID</th>
                     <th>Name</th>
-                    <th>Disabled</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -13,7 +13,7 @@ const ProductTable = ({ products }) => {
                     <tr key={product.id}>
                         <td>{product.id}</td>
                         <td>{product.name}</td>
-                        <td>{JSON.stringify(product.disabled)}</td>
+                        <td>{product.disabled ? 'Disabled' : 'Active'}</td>
                     </tr>
                 ))}
             </tbody>

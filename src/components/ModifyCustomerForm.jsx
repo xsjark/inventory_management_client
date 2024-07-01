@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import app from '../firebase';
 
-const ModifyCustomerForm = () => {
+const ModifyCustomerForm = ({ onSubmit }) => {
     const [uid, setUid] = useState('');
     const [name, setName] = useState('');
 
@@ -26,6 +26,7 @@ const ModifyCustomerForm = () => {
             });
             if (response.ok) {
                 console.log('Customer modified successfully');
+                onSubmit();
             } else {
                 throw new Error('Failed to modify customer');
             }

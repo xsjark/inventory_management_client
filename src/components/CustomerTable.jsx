@@ -4,7 +4,7 @@ const CustomerTable = ({ customers }) =>  (
         <tr>
           <th>Customer UID</th>
           <th>Name</th>
-          <th>Disabled</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -12,7 +12,7 @@ const CustomerTable = ({ customers }) =>  (
           <tr key={customer.id}>
             <td>{customer.id}</td>
             <td>{customer.name}</td>
-            <td>{JSON.stringify(customer.disabled)}</td>
+            <td>{customer.disabled ? 'Disabled' : 'Active'}</td>
           </tr>
         ))}
       </tbody>

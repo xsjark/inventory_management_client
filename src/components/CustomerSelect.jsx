@@ -1,4 +1,6 @@
 const CustomerSelect = ({ customers, handleSelectCustomer }) => {
+    const filteredCustomers = customers.filter(customer => !customer.disabled);
+
     return (
         <div>
             <select
@@ -10,7 +12,7 @@ const CustomerSelect = ({ customers, handleSelectCustomer }) => {
                 }}
             >
                 <option value="">Select a customer</option>
-                {customers.map((customer) => (
+                {filteredCustomers.map((customer) => (
                     <option key={customer.id} value={JSON.stringify({ id: customer.id, name: customer.name })}>
                         {customer.name}
                     </option>

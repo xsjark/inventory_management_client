@@ -23,7 +23,7 @@ const OutboundInvoicesTable = ({ invoices }) => {
                                 <ul>
                                     {invoice.products.map((product, index) => (
                                         <li key={index}>
-                                            {product.productId} (x{product.quantity})
+                                            {product.name} (x{product.quantity})
                                         </li>
                                     ))}
                                 </ul>

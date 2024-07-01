@@ -22,6 +22,11 @@ import DeleteInboundInvoiceForm from './components/DeleteInboundInvoiceForm';
 import CreateOutboundInvoiceForm from './components/CreateOutboundForm';
 import OutboundInvoicesTable from './components/OutboundInvoicesTable';
 import DeleteOutboundInvoiceForm from './components/DeleteOutboundInvoiceForm';
+import Products from './pages/Products';
+import Warehouses from './pages/Warehouses';
+import Customers from './pages/Customers';
+import InboundInvoices from './pages/InboundInvoices';
+import OutboundInvoices from './pages/OutboundInvoices';
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -232,41 +237,11 @@ function App() {
             <SignOutButton setIsSignedIn={setIsSignedIn} />
           </div>
           <div className='app-container'>
-            <div className='products-container'>
-              <CreateProductForm fetchProducts={fetchProducts} />
-              <ModifyProductForm fetchProducts={fetchProducts} />
-              <DeleteProductForm fetchProducts={fetchProducts} />
-              <ProductTable products={products} />
-            </div>
-            <div className='warehouses-container'>
-              <CreateWarehouseForm />
-              <ModifyWarehouseForm />
-              <DeleteWarehouseForm />
-              {warehouses && warehouses.map(warehouse => (
-                <WarehouseTable key={warehouse.name} warehouseInventory={warehouse} />
-              ))}
-            </div>
-            <div className='customers-container'>
-              <CreateCustomerForm />
-              <ModifyCustomerForm />
-              <DeleteCustomerForm />
-              <CustomerTable customers={customers} />
-            </div>
-            <div className='inbound-container'>
-              <CreateInboundForm products={products} warehouses={warehouses} customers={customers} />
-              <DeleteInboundInvoiceForm onInvoiceDeleted={fetchInboundInvoices} />
-              <InboundInvoicesTable invoices={invoices} />
-            </div>
-            <div className='outbound-container'>
-              <CreateOutboundInvoiceForm 
-                warehouses={warehouses}
-                customers={customers}
-                products={products}
-                onInvoiceCreated={fetchOutboundInvoices}
-              />
-              <DeleteOutboundInvoiceForm onInvoiceDeleted={fetchOutboundInvoices} />
-              <OutboundInvoicesTable invoices={outboundInvoices} />
-            </div>
+              <Products />
+              <Warehouses />
+              <Customers />
+              <InboundInvoices />
+              <OutboundInvoices />
           </div>
         </>
       ) : (
