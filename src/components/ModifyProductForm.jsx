@@ -35,11 +35,34 @@ const ModifyProductForm = ({ onSubmit }) => {
         }
     };
 
+    const styles = {
+        form: {
+            display: 'flex',
+            gap: '10px',
+        },
+        input: {
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontSize: '14px',
+        },
+        button: {
+            padding: '8px 16px',
+            backgroundColor: '#ffc107',
+            color: 'black',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            transition: 'background-color 0.3s',
+        },
+    };
+
     return (
-        <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='Product UID' value={uid} onChange={(e) => setUid(e.target.value)} />
-                <input type="text" placeholder='Product Name' value={name} onChange={(e) => setName(e.target.value)} />
-            <button type="submit">Modify Product</button>
+        <form onSubmit={handleSubmit} style={styles.form}>
+            <input type="text" placeholder='Product UID' value={uid} onChange={(e) => setUid(e.target.value)} style={styles.input} />
+            <input type="text" placeholder='Product Name' value={name} onChange={(e) => setName(e.target.value)} style={styles.input} />
+            <button type="submit" style={styles.button}>Modify Product</button>
         </form>
     );
 };

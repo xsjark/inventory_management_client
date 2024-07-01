@@ -34,10 +34,33 @@ const DeleteProductForm = ({ onSubmit }) => {
         }
     };
 
+    const styles = {
+        form: {
+            display: 'flex',
+            gap: '10px',
+        },
+        input: {
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontSize: '14px',
+        },
+        button: {
+            padding: '8px 16px',
+            backgroundColor: '#dc3545',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            transition: 'background-color 0.3s',
+        },
+    };
+
     return (
-        <form onSubmit={handleDelete}>
-            <input type="text" placeholder="Product UID" value={uid} onChange={(e) => setUid(e.target.value)} />
-            <button type="submit">Delete Product</button>
+        <form onSubmit={handleDelete} style={styles.form}>
+            <input type="text" placeholder="Product UID" value={uid} onChange={(e) => setUid(e.target.value)} style={styles.input} />
+            <button type="submit" style={styles.button}>Delete Product</button>
         </form>
     );
 };

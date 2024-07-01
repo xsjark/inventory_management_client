@@ -1,173 +1,19 @@
-import './App.css'
-import SignInForm from './components/SignInForm'
 import React, { useState, useEffect } from 'react';
-import SignOutButton from './components/SignOutButton';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import app from './firebase';
-import CreateProductForm from './components/CreateProductForm';
-import ProductTable from './components/ProductTable';
-import ModifyProductForm from './components/ModifyProductForm';
-import DeleteProductForm from './components/DeleteProductForm';
-import WarehouseTable from './components/WarehouseTable';
-import CreateInboundForm from './components/CreateInboundForm/CreateInboundForm';
-import CreateWarehouseForm from './components/CreateWarehouseForm';
-import DeleteWarehouseForm from './components/DeleteWarehouseForm';
-import ModifyWarehouseForm from './components/ModifyWarehouseForm';
-import CreateCustomerForm from './components/CreateCustomerForm';
-import CustomerTable from './components/CustomerTable';
-import ModifyCustomerForm from './components/ModifyCustomerForm';
-import DeleteCustomerForm from './components/DeleteCustomer';
-import InboundInvoicesTable from './components/InboundInvoicesTable';
-import DeleteInboundInvoiceForm from './components/DeleteInboundInvoiceForm';
-import CreateOutboundInvoiceForm from './components/CreateOutboundForm';
-import OutboundInvoicesTable from './components/OutboundInvoicesTable';
-import DeleteOutboundInvoiceForm from './components/DeleteOutboundInvoiceForm';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Products from './pages/Products';
 import Warehouses from './pages/Warehouses';
 import Customers from './pages/Customers';
 import InboundInvoices from './pages/InboundInvoices';
 import OutboundInvoices from './pages/OutboundInvoices';
+import SignInForm from './components/SignInForm'
+import AppBar from './components/AppBar';
+
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
-  const [warehouses, setWarehouses] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [invoices, setInvoices] = useState([]);
-  const [outboundInvoices, setOutboundInvoices] = useState([]);
-  const [error, setError] = useState(null);
   const [role, setRole] = useState('');
-
-  const fetchProducts = async () => {
-    try {
-      const auth = getAuth(app);
-      const idToken = await auth.currentUser.getIdToken();
-      const response = await fetch('http://localhost:3000/getProducts', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        }
-      });
-      if (response.ok) {
-        const productsData = await response.json();
-        setProducts(productsData);
-      } else {
-        throw new Error('Failed to fetch products');
-      }
-    } catch (error) {
-      console.error('Error fetching products:', error.message);
-    }
-  };
-
-  const fetchWarehouses = async () => {
-    try {
-      const auth = getAuth(app);
-      const idToken = await auth.currentUser.getIdToken();
-      const response = await fetch('http://localhost:3000/getWarehouses', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        }
-      });
-      if (response.ok) {
-        const warehousesData = await response.json();
-        setWarehouses(warehousesData);
-      } else {
-        throw new Error('Failed to fetch warehouses');
-      }
-    } catch (error) {
-      console.error('Error fetching warehouses:', error.message);
-    }
-  };
-
-  const fetchCustomers = async () => {
-    try {
-      const auth = getAuth(app);
-      const idToken = await auth.currentUser.getIdToken();
-      const response = await fetch('http://localhost:3000/getCustomers', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        }
-      });
-      if (response.ok) {
-        const customersData = await response.json();
-        setCustomers(customersData);
-      } else {
-        throw new Error('Failed to fetch customers');
-      }
-    } catch (error) {
-      console.error('Error fetching customers:', error.message);
-    }
-  };
-  
-  const fetchInboundInvoices = async () => {
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-  
-    if (!user) {
-      console.error('User not signed in');
-      return;
-    }
-  
-    try {
-      const idToken = await user.getIdToken();
-      const response = await fetch('http://localhost:3000/getInvoices', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch invoices');
-      }
-  
-      const fetchedInvoices = await response.json();
-      setInvoices(fetchedInvoices);
-    } catch (error) {
-      console.error('Error fetching invoices:', error.message);
-    }
-  };
-
-  const fetchOutboundInvoices = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-        const auth = getAuth(app);
-        const user = auth.currentUser;
-        if (!user) {
-            throw new Error('User not signed in');
-        }
-        const idToken = await user.getIdToken();
-
-        const response = await fetch('http://localhost:3000/getOutboundInvoices', {
-            headers: {
-                'Authorization': `Bearer ${idToken}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch outbound invoices');
-        }
-
-        const data = await response.json();
-        setOutboundInvoices(data);
-    } catch (error) {
-        console.error('Error fetching outbound invoices:', error.message);
-        setError(error.message);
-    } finally {
-        setLoading(false);
-    }
-};
-
-  // useEffect(() => {
-  //   const auth = getAuth(app);
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     setIsSignedIn(!!user);
-  //     fetchProducts();
-  //     fetchWarehouses();
-  //     setLoading(false);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
 
   const getRole = async () => {
     const auth = getAuth(app);
@@ -200,56 +46,45 @@ function App() {
     }
   };
 
-  const handleInvoiceCreated = () => {
-    // Refresh data if needed
-  };
-
   useEffect(() => {
     const auth = getAuth(app);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    
+    const handleAuthChange = async (user) => {
       setIsSignedIn(!!user);
-
-      Promise.all([
-        getRole(),
-        fetchProducts(),
-        fetchWarehouses(),
-        fetchCustomers(),
-        fetchInboundInvoices(),
-        fetchOutboundInvoices(),
-      ]).then(() => {
-        setLoading(false);
-      }).catch((error) => {
-        console.error('Error loading data:', error.message);
-        setLoading(false); // Ensure loading is set to false even if there's an error
-      });
-    });
-    return () => unsubscribe();
+      if (user) {
+        try {
+          await getRole();
+        } catch (error) {
+          console.error('Error loading data:', error.message);
+        }
+      }
+    };
+  
+    const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
+    
+    return unsubscribe;
   }, []);
 
   return (
-    <>
-      {loading ? (
-        <p>Loading...</p>
-      ) : isSignedIn ? (
+    <Router>
+      {isSignedIn ? (
         <>
-          <div className='app-bar'>
-            <p>{role}</p>
-            <SignOutButton setIsSignedIn={setIsSignedIn} />
-          </div>
+          <AppBar role={role} setIsSignedIn={setIsSignedIn} />
           <div className='app-container'>
-              <Products />
-              <Warehouses />
-              <Customers />
-              <InboundInvoices />
-              <OutboundInvoices />
+            <Routes>
+              <Route path="/products" element={<Products />} />
+              <Route path="/warehouses" element={<Warehouses />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/inbound-invoices" element={<InboundInvoices />} />
+              <Route path="/outbound-invoices" element={<OutboundInvoices />} />
+              <Route path="/" element={<Products />} /> {/* Default route */}
+            </Routes>
           </div>
         </>
       ) : (
-        <>
-          <SignInForm setIsSignedIn={setIsSignedIn} />
-        </>
+        <SignInForm setIsSignedIn={setIsSignedIn} />
       )}
-    </>
+    </Router>
   )
 }
 

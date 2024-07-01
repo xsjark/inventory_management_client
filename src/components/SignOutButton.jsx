@@ -1,3 +1,4 @@
+import React from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import app from '../firebase';
 
@@ -33,8 +34,33 @@ const SignOutButton = ({ setIsSignedIn }) => {
         }
     };
 
+    const styles = {
+        button: {
+            padding: '8px 16px',
+            backgroundColor: '#dc3545', // A red color for signout, contrasting with the blue used in the navbar
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: '500',
+            fontSize: '14px',
+            transition: 'background-color 0.3s',
+            outline: 'none',
+        },
+        hoverStyle: {
+            backgroundColor: '#c82333', // Darker shade for hover effect
+        }
+    };
+
     return (
-        <button onClick={handleSignOut}>Sign Out</button>
+        <button 
+            onClick={handleSignOut} 
+            style={styles.button}
+            onMouseOver={(e) => Object.assign(e.target.style, styles.hoverStyle)}
+            onMouseOut={(e) => Object.assign(e.target.style, styles.button)}
+        >
+            Sign Out
+        </button>
     );
 };
 

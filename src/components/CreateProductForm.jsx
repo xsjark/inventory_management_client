@@ -36,15 +36,39 @@ const CreateProductForm = ({ onSubmit }) => {
         }
     };
 
+    const styles = {
+        form: {
+            display: 'flex',
+            gap: '10px',
+        },
+        input: {
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontSize: '14px',
+        },
+        button: {
+            padding: '8px 16px',
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            transition: 'background-color 0.3s',
+        },
+    };
+
     return (
-        <div>
+        <div style={styles.form}>
             <input
                 type="text"
                 placeholder="Product Name"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
+                style={styles.input}
             />
-            <button onClick={handleCreateProduct}>Create Product</button>
+            <button onClick={handleCreateProduct} style={styles.button}>Create Product</button>
         </div>
     );
 };

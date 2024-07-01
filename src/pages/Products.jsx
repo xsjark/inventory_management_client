@@ -32,12 +32,36 @@ const Products = () => {
     useEffect(() => {
         fetchProducts();
     }, []);
-
+    const styles = {
+        container: {
+            padding: '20px',
+            backgroundColor: '#ffffff',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            margin: '20px',
+        },
+        header: {
+            fontSize: '24px',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+            color: '#333',
+        },
+        formContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            gap: '20px',
+            marginBottom: '20px',
+        },
+    };
     return (
-        <div className='products-container'>
-            <CreateProductForm onSubmit={fetchProducts} />
-            <ModifyProductForm onSubmit={fetchProducts} />
-            <DeleteProductForm onSubmit={fetchProducts} />
+        <div style={styles.container}>
+            <h2 style={styles.header}>Products Management</h2>
+            <div style={styles.formContainer}>
+                <CreateProductForm onSubmit={fetchProducts} />
+                <ModifyProductForm onSubmit={fetchProducts} />
+                <DeleteProductForm onSubmit={fetchProducts} />
+            </div>
             <ProductTable products={products} />
         </div>
     );
